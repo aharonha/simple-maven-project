@@ -15,9 +15,13 @@ public class ArrayPublisherTest extends PublisherVerification<Integer>
 
 	@Override
 	public Publisher<Integer> createPublisher(long elements) {
-		Integer[] arr = (Integer[]) IntStream.range(1, Integer.max(Integer.MAX_VALUE, ((int) elements))).boxed()
-				.toArray();
-		return new ArrayPublisher<Integer>(arr);
+		int[] arr = IntStream.range(1, (int)elements).toArray();
+		
+		Integer[] array = new Integer[arr.length];
+		for (int i = 0; i < arr.length && i< maxElementsFromPublisher(); i++) {
+			array[i] = arr[i];
+		}
+		return new ArrayPublisher<Integer>(array );
 	}
 
 	@Override
@@ -25,5 +29,12 @@ public class ArrayPublisherTest extends PublisherVerification<Integer>
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	  @Override
+	  public long maxElementsFromPublisher() {
+	    return 300;
+	  }
+	  @Override
+	  public long boundedDepthOfOnNextAndRequestRecursion() {
+	    return 2;
+	  }
 }
